@@ -7,6 +7,10 @@ const UserSchema = new mongoose.Schema({
     employeeID: {
         type : String,
     },
+    coverImages: {
+        type: [String],
+        default : "https://ibb.co/ChcbJ8Z"
+    },
     email : {
         type: String,
     },

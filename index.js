@@ -16,6 +16,7 @@ app.use(express.json({extended: true}));
 
 //Routes Config
 app.use("/api/user", require("./routes/user"));
+app.use("/api/attendance", require("./routes/attendance"));
 
 // 404 Routes
 app.all("*", async (req, res) => {

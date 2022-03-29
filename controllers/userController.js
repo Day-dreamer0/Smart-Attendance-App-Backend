@@ -160,6 +160,15 @@ exports.getLoggedInUserDetails = async (req, res) => {
   }
 };
 
+// exports.updateInitial = async(req,res) => {
+//   try {
+//     var user = await User.findById(req.user.id);
+//     var {employeeID, coverImages, dateOfJoining, dateOfBirth}
+//   } catch (error) {
+//     console.log(error.message);
+//   }
+// }
+
 exports.updateInfo = async(req, res) => {
   try {
     var user = await User.findById(req.user.id);
