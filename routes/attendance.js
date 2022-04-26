@@ -6,7 +6,7 @@ const uploadFile = require("../utils/uploadFile");
 
 // @GET Route1
 // @DESC Get all Attendance
-// router.get("/all", userAuth,attendanceController.getAllAttendances);
+router.get("/all", userAuth,attendanceController.getAllAttendances);
 
 
 // @POST Route

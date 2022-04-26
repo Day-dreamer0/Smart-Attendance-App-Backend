@@ -28,4 +28,14 @@ exports.addAttendance = async(req,res) => {
     }
 }
 
-// exports.getAllAttendances
+exports.getAllAttendances = async(req, res) => {
+    try {
+        var attendances = await Attendance.find ({id:req.user.id});
+        if(attendances.length>0)
+            return res.json({ statusCode: 200, attendances: attendances });
+        else
+            return res.json({statusCode:400, message: "No attendance found!!!"});
+    } catch (error) {
+        console.log(error.message);
+    }
+}
