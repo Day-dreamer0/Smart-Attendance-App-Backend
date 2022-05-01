@@ -18,20 +18,59 @@ exports.addAttendance = async(req,res) => {
         }
         else
         {
-            var coverImageURL = `http://${req.headers.host}/media/${req.file.filename}`;
+            const images = await User.findById(req.user.id,{coverImages:1});
+            // console.log('images',images);
+            const body = new FormData();
+            // body.append('images', []);
+
+            // you have to put the images in the same field, and the server will recibe an array
+            // images.coverImages.forEach(img => body.append('images[]',fs.createReadStream(img)));
+            images.coverImages.forEach(img => body.append('images[]',fs.createReadStream(img)));
+            // images.coverImages.forEach(img => console.log(fs.createReadStream(img)));
+            // console.log("body = ",body);
+            // body.images.push(fs.createReadStream(img)
+            // {
+            //     uri:img,
+            //     type:'image/jpeg',
+            //     // name:req.file.filename
+            // }
+            // the other data to send
+            // var coverImageURL = `http://${req.headers.host}/media/${req.file.filename}`;
+            var coverImageURL = `media/${req.file.filename}`;
+            // console.log(coverImageURL)
+            body.append('test',fs.createReadStream(coverImageURL));
+            // console.log(fs.createReadStream(coverImageURL));
+            // {
+            //     uri:coverImageURL,
+            //     // type:path.extname(req.file.originalname)
+            //     type:'image/jpeg',
+            //     name:req.file.filename
+            // }
+            // console.log('1..body',body);
             attendance = new Attendance({
                 id: id,
                 coverImage : coverImageURL,
             });
-            await attendance.save();
-            return res.json({ statusCode : 200, message : "Image Successfully Catpured!!"});
+            // console.log("attendance =", attendance);
+            // return res.json({statusCode:400, message: "Code ends"});
+            var url='http://127.0.0.1:8080/upload';
+            
+            var check=await axios.post(url, body);
+            // console.log(check)
+            // console.log(check.data)
+            if(check.data.statusCode==200)
+            {
+                await attendance.save();
+                return res.json({ statusCode : 200, message : check.data.message});
+            }
+            else
+                return res.json({statusCode:400, message: check.data.message});
         }
 
     } catch (error) {
         console.log(error.message);
     }
 }
-
 exports.getAllAttendances = async(req, res) => {
     try {
         var attendances = await Attendance.find ({id:req.user.id}).select("-coverImage");

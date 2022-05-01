@@ -225,7 +225,8 @@ exports.updateInfo = async(req, res) => {
     if(req.files.length==5)
     {
       for (var i = 0; i < req.files.length; i++) {
-        var coverImageURL = `http://${req.headers.host}/media/${req.files[i].filename}`;
+        var coverImageURL = `media/${req.files[i].filename}`;
+        // var coverImageURL = `http://${req.headers.host}/media/${req.files[i].filename}`;
         coverImages.push(coverImageURL);
       }
       user.coverImages=coverImages;
