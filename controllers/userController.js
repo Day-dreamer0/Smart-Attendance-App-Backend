@@ -6,7 +6,7 @@ require("dotenv").config();
 exports.register = async (req, res) => {
   try {
     const { name, email, password, phone } = req.body;
-
+    // console.log(phone);
     // Check if it is Null
     if (name == "" || name == null) {
       return res.json({ statusCode: 400, message: "Field Name is Empty!" });
@@ -31,18 +31,18 @@ exports.register = async (req, res) => {
       });
     }
 
-    if (phone == null) {
-      return res.json({ statusCode: 400, message: "Field phone is Empty!" });
-    }
+    // if (phone == null) {
+    //   return res.json({ statusCode: 400, message: "Field phone is Empty!" });
+    // }
 
     // Check if User Exists in DB
     var user = await User.findOne({ email });
-    if (user != null) {
+    if (email != undefined && user != null) {
       return res.json({ statusCode: 400, message: "User's Email Already Exists!" });
     }
 
     user = await User.findOne({ phone });
-    if (user != null) {
+    if (phone != undefined && user != null) {
       return res.json({ statusCode: 400, message: "User's Number already Exists!" });
     }
 
@@ -51,7 +51,7 @@ exports.register = async (req, res) => {
       name: name,
       email: email,
       password: password,
-      phone: phone,
+      // phone: phone,
     });
 
     // Password Encryption
@@ -172,44 +172,74 @@ exports.getLoggedInUserDetails = async (req, res) => {
 exports.updateInfo = async(req, res) => {
   try {
     var user = await User.findById(req.user.id);
-    var {name, email, password, phone, personalInfo} = req.body;
-    if(name != null && name!="" && user.name!=name)
-    {
-      user.name=name;
+    // var {name, email, password, phone} = req.body;
+    var emailcount=0, emailid=null;
+    // var phoneCursor = await User.find({ phone });
+    // if (email != undefined && email!= null && user != null) {
+    //   var emailCursor = await User.find({ email });
+    //   emailCursor.forEach(emailexists = (emailuser) =>{
+    //     if(emailuser.email== user.email)
+    //     {
+    //       count++;
+    //       emailid=emailuser._id;
+    //     }
+    //   })
+    //   if(count>1 || (count==1 && emailid == req.user.id))
+    //   return res.json({ statusCode: 400, message: "User's Email Already Exists!" });
+    // }
+    // if (phone != undefined && phone!= null && user != null) {
+    //   return res.json({ statusCode: 400, message: "User's Number already Exists!" });
+    // }
+    // if(name != null && name!="" && user.name!=name)
+    // {
+    //   user.name=name;
+    // }
+    // if(email != null && email!="" && user.email!=email)
+    // {
+    //   if (!email.includes("@")) {
+    //     return res.json({ statusCode: 400, message: "Email is not Valid!" });
+    //   }
+    //   user.email=email;
+    // }
+    // if(phone != null && phone!="" && user.phone!=phone)
+    // {
+    //   user.phone=phone;
+    // }
+    // if(password != null && password!="" && user.password!=password)
+    // {
+    //   if (password.length < 8) {
+    //     return res.json({
+    //       statusCode: 400,
+    //       message: "Password must be greater than 8 characters!",
+    //     });
+    //   }
+    //   user.password=password;
+    // }
+    var coverImages = [];
+    if (req.files.length > 5 || req.files.length <5) {
+      return res.json({
+        statusCode: 400,
+        message: "You can add only 5 images!!",
+      });
     }
-    if(email != null && email!="" && user.email!=email)
+    if(req.files.length==5)
     {
-      if (!email.includes("@")) {
-        return res.json({ statusCode: 400, message: "Email is not Valid!" });
+      for (var i = 0; i < req.files.length; i++) {
+        var coverImageURL = `http://${req.headers.host}/media/${req.files[i].filename}`;
+        coverImages.push(coverImageURL);
       }
-      user.email=email;
-    }
-    if(phone != null && phone!="" && user.phone!=phone)
-    {
-      user.phone=phone;
-    }
-    if(password != null && password!="" && user.password!=password)
-    {
-      if (password.length < 8) {
-        return res.json({
-          statusCode: 400,
-          message: "Password must be greater than 8 characters!",
-        });
-      }
-      user.password=password;
-    }
-    if(personalInfo != null && personalInfo!="" && user.personalInfo!=personalInfo)
-    {
-      user.personalInfo=personalInfo;
-    }
-    if(name!=null || phone !=null || password != null || email != null)
-    {
+      user.coverImages=coverImages;
       await user.save();
       return res.json({statusCode:200, message: "User Information Updated."});
     }
+
+    // if(name!=null || phone !=null || password != null || email != null)
+    // {
+      
+    // }
     else
     {
-      return res.json({statusCode:400, message: "No User Information Given."});
+      return res.json({statusCode:400, message: "Correct Information is not given!! "});
     }
   } catch (error) {
     console.log(error.message);

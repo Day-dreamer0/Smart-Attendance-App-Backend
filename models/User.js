@@ -9,7 +9,7 @@ const UserSchema = new mongoose.Schema({
     },
     coverImages: {
         type: [String],
-        default : "https://ibb.co/ChcbJ8Z"
+        // default : ""
     },
     email : {
         type: String,
