@@ -77,7 +77,7 @@ exports.getAllAttendances = async(req, res) => {
         if(attendances.length>0)
             return res.json({ statusCode: 200, attendances: attendances });
         else
-            return res.json({statusCode:400, message: "No attendance found!!!"});
+            return res.json({statusCode:200, attendances: []});
     } catch (error) {
         console.log(error.message);
     }
