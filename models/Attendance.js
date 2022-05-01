@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
 const AttendanceSchema = new mongoose.Schema({
-    // add foreign key later
     id :{ 
         type : String,
     },

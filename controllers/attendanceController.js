@@ -1,6 +1,10 @@
 const Attendance = require("../models/Attendance");
 const User = require("../models/User");
+var FormData = require('form-data');
+var fs = require('fs');
+const axios = require('axios');
 require("dotenv").config();
+const path = require('path');
 
 exports.addAttendance = async(req,res) => {
     try {
@@ -30,7 +34,7 @@ exports.addAttendance = async(req,res) => {
 
 exports.getAllAttendances = async(req, res) => {
     try {
-        var attendances = await Attendance.find ({id:req.user.id});
+        var attendances = await Attendance.find ({id:req.user.id}).select("-coverImage");
         if(attendances.length>0)
             return res.json({ statusCode: 200, attendances: attendances });
         else
