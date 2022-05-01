@@ -173,7 +173,7 @@ exports.updateInfo = async(req, res) => {
   try {
     var user = await User.findById(req.user.id);
     // var {name, email, password, phone} = req.body;
-    var emailcount=0, emailid=null;
+    // var emailcount=0, emailid=null;
     // var phoneCursor = await User.find({ phone });
     // if (email != undefined && email!= null && user != null) {
     //   var emailCursor = await User.find({ email });
@@ -231,7 +231,7 @@ exports.updateInfo = async(req, res) => {
       }
       user.coverImages=coverImages;
       await user.save();
-      return res.json({statusCode:200, message: "User Information Updated."});
+      return res.json({statusCode:200, user: user});
     }
 
     // if(name!=null || phone !=null || password != null || email != null)
