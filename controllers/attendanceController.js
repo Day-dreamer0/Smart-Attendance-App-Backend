@@ -53,7 +53,7 @@ exports.addAttendance = async(req,res) => {
             });
             // console.log("attendance =", attendance);
             // return res.json({statusCode:400, message: "Code ends"});
-            var url='http://127.0.0.1:8080/upload';
+            var url='http://daydreamer05.pythonanywhere.com/upload';
             
             var check=await axios.post(url, body);
             // console.log(check)
@@ -61,7 +61,7 @@ exports.addAttendance = async(req,res) => {
             if(check.data.statusCode==200)
             {
                 await attendance.save();
-                return res.json({ statusCode : 200, message : check.data.message});
+                return res.json({ statusCode : 200, attendance : attendance});
             }
             else
                 return res.json({statusCode:400, message: check.data.message});
