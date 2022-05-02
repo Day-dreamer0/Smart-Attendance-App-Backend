@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const moment = require("moment");
 
 const AttendanceSchema = new mongoose.Schema({
     id :{ 
@@ -11,8 +12,9 @@ const AttendanceSchema = new mongoose.Schema({
         type : String,
     },
     createdDate : {
-        type : Date,
-        default : Date.now()
+        type : String,
+        // ist format date
+        default : moment.utc().add(330,'minutes').format("YYYY-MM-DD hh:mm a")
     }
 })
 

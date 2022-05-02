@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const moment = require("moment");
 
 const UserSchema = new mongoose.Schema({
     name : {
@@ -27,8 +28,8 @@ const UserSchema = new mongoose.Schema({
         type : Date,
     },
     createdDate : {
-        type : Date,
-        default : Date.now()
+        type : String,
+        default : moment.utc().add(330,'minutes').format("YYYY-MM-DD hh:mm a")
     },
 })
 
