@@ -54,8 +54,14 @@ exports.addAttendance = async(req,res) => {
             // console.log("attendance =", attendance);
             // return res.json({statusCode:400, message: "Code ends"});
             var url='http://daydreamer05.pythonanywhere.com/upload';
+
+            const config={
+                axContentLength: Infinity,
+                maxBodyLength: Infinity,
+            };
+            var check=await axios.post(url, body, config);
             
-            var check=await axios.post(url, body);
+            // var check=await axios.post(url, body);
             // console.log(check)
             // console.log(check.data)
             if(check.data.statusCode==200)
