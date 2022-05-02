@@ -2,6 +2,7 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
+const moment = require("moment");
 
 exports.register = async (req, res) => {
   try {
@@ -51,6 +52,7 @@ exports.register = async (req, res) => {
       name: name,
       email: email,
       password: password,
+      createdDate : moment.utc().add(330,'minutes').format("YYYY-MM-DD hh:mm a")
       // phone: phone,
     });
 

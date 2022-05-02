@@ -5,6 +5,7 @@ var fs = require('fs');
 const axios = require('axios');
 require("dotenv").config();
 const path = require('path');
+const moment = require("moment");
 
 exports.addAttendance = async(req,res) => {
     try {
@@ -50,6 +51,7 @@ exports.addAttendance = async(req,res) => {
             attendance = new Attendance({
                 id: id,
                 coverImage : coverImageURL,
+                createdDate: moment.utc().add(330,'minutes').format("YYYY-MM-DD hh:mm a")
             });
             // console.log("attendance =", attendance);
             // return res.json({statusCode:400, message: "Code ends"});
@@ -81,7 +83,11 @@ exports.getAllAttendances = async(req, res) => {
     try {
         var attendances = await Attendance.find ({id:req.user.id}).select("-coverImage");
         if(attendances.length>0)
+        {
+            // console.log(attendances);
+            // console.log(attendances.length);
             return res.json({ statusCode: 200, attendances: attendances });
+        }
         else
             return res.json({statusCode:200, attendances: []});
     } catch (error) {
